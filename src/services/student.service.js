@@ -24,7 +24,7 @@ class StudentService {
 
   // PUT /students/:id (full replace)
   static updateStudent = async (id, body) => {
-const {rows}=await StudentRepo.updateStudent(id,body)
+const {rows} =await StudentRepo.updateStudent(id,body)
     if (rows.length === 0) throw ApiError.notFound("Student not found");
     return { rows: rows[0] };
   };

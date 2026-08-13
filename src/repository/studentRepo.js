@@ -58,10 +58,10 @@ class StudentRepo {
 
     const { rows } = await pool.query(
       `UPDATE students
-       SET first_name = $1, last_name = $2, email = $3, year_level = $4, updated_at = NOW()
-       WHERE id = $5
-       RETURNING id, first_name, last_name, email, year_level, created_at, updated_at`,
-      [firstName, lastName, email, yearLevel, id],
+       SET first_name = $1, last_name = $2, year_level = $3, updated_at = NOW()
+       WHERE id = $4
+       RETURNING id, first_name, last_name,  year_level, created_at, updated_at`,
+      [firstName, lastName, yearLevel, id],
     );
 
     return { rows };

@@ -31,13 +31,12 @@ class StudentController {
     return sendSuccess(res, 201, rows);
   });
 
-  // PUT /students/:id (full replace)
   static updateStudent = asyncHandler(async (req, res) => {
 
     const { id } = req.params;
     const body = req.body;
 
-    const { rows } = await StudentService(id,body)
+    const { rows } = await StudentService.updateStudent(id,body)
     return sendSuccess(res, 200, rows);
   });
 
@@ -45,7 +44,7 @@ class StudentController {
   static deleteStudent = asyncHandler(async (req, res) => {
     const { id } = req.params;
 
-    const { rows } = await StudentService.deleteStudent(id)
+    await StudentService.deleteStudent(id)
     return res.status(204).send();
   });
 }
