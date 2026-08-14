@@ -1,18 +1,19 @@
 import { Router } from 'express';
 import StudentController from '../controllers/students.controller.js';
-// import { validate } from '../middlewares/validate.js';
 import { requireAuth } from '../middlewares/auth.js';
-// import { createStudentSchema, updateStudentSchema } from '../validators/student.validator.js';
-// import { idParamSchema, paginationQuerySchema } from '../validators/common.validator.js';
+import { idParamSchema, paginationQuerySchema } from '../validators/common.validator.js';
+import { createStudentSchema, updateStudentSchema } from '../validators/student.validator.js';
+import { validate } from '../middlewares/validate.js';
+
 
 const router = Router();
 
 router.use(requireAuth);
 
-router.get('/',  StudentController.getStudents);
-router.get('/:id', StudentController.getStudentById);
-router.post('/',  StudentController.createStudent);
-router.put('/:id', StudentController.updateStudent);
-router.delete('/:id', StudentController.deleteStudent);
+router.get('/', validate({ query: paginationQuerySchema }),  StudentController.getStudents);
+router.get('/:id',validate({ params: idParamSchema }),  StudentController.getStudentById);
+router.post('/',validate({ body: createStudentSchema }),   StudentController.createStudent);
+router.put('/:id', validate({ params: idParamSchema, body: updateStudentSchema }), StudentController.updateStudent);
+router.delete('/:id',validate({ params: idParamSchema }), StudentController.deleteStudent);
 
 export default router;
