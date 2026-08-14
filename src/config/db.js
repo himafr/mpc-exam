@@ -3,26 +3,25 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// If DATABASE_URL is provided, use it (common for hosted Postgres / deployment platforms).
+const config = {
+    host: process.env.PGHOST || 'localhost',
+    port: Number(process.env.PGPORT) || 5432,
+    user: process.env.PGUSER || 'postgres',
+    password: process.env.PGPASSWORD || '0000',
+    database: process.env.PGDATABASE || 'student_dashboard',
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  };
+export const pool = new Pool(config);
 
-// Otherwise fall back to individual PG* environment variables.
-export const pool = new Pool(
-  process.env.DATABASE_URL
-    ? {
-        connectionString: process.env.DATABASE_URL,
-        ssl:
-          process.env.NODE_ENV === 'production'
-            ? { rejectUnauthorized: false }
-            : undefined,
-      }
-    : {
-        host: process.env.PGHOST || 'localhost',
-        port: Number(process.env.PGPORT) || 5432,
-        user: process.env.PGUSER || 'postgres',
-        password: process.env.PGPASSWORD || '0000',
-        database: process.env.PGDATABASE || 'student_dashboard',
-      }
-);
+    // : {
+    //     host: process.env.PGHOST || 'localhost',
+    //     port: Number(process.env.PGPORT) || 5432,
+    //     user: process.env.PGUSER || 'postgres',
+    //     password: process.env.PGPASSWORD || '0000',
+    //     database: process.env.PGDATABASE || 'student_dashboard',
+    //   }
 
 pool.on('error', (err) => {
   // eslint-disable-next-line no-console
